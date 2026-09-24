@@ -57,4 +57,19 @@ class Perceptron:
                 da = (output - target) / (output * (1 - output))
                 for layer in self.layers[::-1]:
                     # 4. Propagate hacia atrás
-                    da = layer
+                    da = layer.backward(da, learning_rate)
+
+            average_loss = loss[0, 0] / training_data.shape[0]
+            print(f'Loss at epoch {epoch + 1}: {average_loss:.3f}')
+
+input_size = 2
+hidden_size = 6
+output_size = 1
+
+h1 = Layer(input_size, hidden_size, relu)
+h2 = Layer(hidden_size, hidden_size, relu)
+output_layer = Layer(hidden_size, output_size, sigmoid)
+
+layers = [h1, h2, output_layer]
+model = Perceptron(layers)
+model.fit(X_train, y_train, epochs=10, learning_rate=0.01)
